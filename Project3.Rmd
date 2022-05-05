@@ -1,0 +1,83 @@
+---
+title: "Project 3: Visualization Presentation"
+subtitle: "Top 2000 Anime Plots"
+author: "Macy Routh"
+date: '2022-05-04'
+output: ioslides_presentation
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  comment = NA
+)
+```
+
+## Packages Used
+
+I used the tidyverse and ggplot2 packages to plot my visualizations.
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(ggplot2)
+```
+
+## DataSet Used
+
+I used the MyAnimeList Top 2000 Anime dataset found on Kaggle.
+
+This dataset compiles the top 2000 anime from the website [MyAnimeList] (https://myanimelist.net/).
+
+## Variables in the Dataset
+
+11 variables of information are provided:
+
+> - 'Name': the name of the Anime
+> - 'Type': the entry's type (TV, Movie, or Music)
+> - 'Score': the score of the anime based on 4 characteristics produced by MyAnimeList
+> - 'Rank': the rank of the anime based on it's score
+> - 'Popularity Rank': the rank of the anime based on it's popularity
+
+## Variables in the Dataset
+
+> - 'Air Date': the time frame of which the anime aired
+> - 'Studio': the studio that worked on the anime
+> - 'Number of Episodes': the number of episodes in each anime
+> - 'Genre': the genre of the anime
+> - 'Themes': the theme of the anime
+> - 'Demographics': the anime's target audience
+
+```{r}
+data <- read.csv("mal_top2000_anime.csv")
+```
+
+## Scatterplot of Score and Popularity Rank
+
+```{r}
+library(ggplot2)
+anime_data <- read_csv("mal_top2000_anime.csv")
+anime_data %>%
+ggplot(anime_data, mapping = aes(x = `Popularity Rank`, y = Score)) + geom_point(color = "navyblue", size = 0.5, width = 0.5) + labs(title = "Correlation between Score and Popularity of Anime")
+```
+
+## Scatterplot of Number of Episodes and Popularity Rank
+
+```{r}
+library(ggplot2)
+anime_data <- read_csv("mal_top2000_anime.csv")
+anime_data %>%
+ggplot(anime_data, mapping = aes(x = `Num. of episodes`, y = `Popularity Rank`)) + geom_point(color = "navyblue", size = 0.5, width = 0.5, title = "Correlation between Score and Popularity") + xlim(0, 100) + xlab(label = "Number of episoides") + labs(title = "Anime Popularity Rank by Number of Episodes")
+```
+
+## Boxplot of Score Rank by Type of Anime
+
+```{r}
+anime_data <- read_csv("mal_top2000_anime.csv")
+factor_data <- factor(anime_data$Type)
+new_order_data <- factor(factor_data, levels = c("Movie", "TV", "Special", "ONA", "OVA", "Music"))
+?geom_boxplot()
+anime_data %>%
+  ggplot(anime_data, mapping = aes(x = new_order_data, y = `Score Rank`)) + geom_boxplot(fill = c("green1", "yellow1", "orange1", "red1", "purple1", "blue1")) + xlab(label = "Type of Anime") + labs(title = "Score Rank by Type of Anime")
+```
